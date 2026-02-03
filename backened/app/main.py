@@ -1,12 +1,23 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from . import models, schemas, crud
+from fastapi.middleware.cors import CORSMiddleware
 from .database import SessionLocal, engine, Base
 
 # Create tables
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Todo API with MySQL")
+
+
+# ✅ ADD THIS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Dependency
 def get_db():
